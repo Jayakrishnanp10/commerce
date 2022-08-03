@@ -1,0 +1,62 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<h2 style="color:rgb(41, 115, 226);">{{bid.title}} </h2>
+<div style="color: beige;"><div style="text-align: left;color: rgba(57, 123, 223, 0.938);">
+    listed date: {{bid.date}}<br>
+    <img src="{{bid.img}}" alt="{{bid.title}}" style="width: 500px;"></div>
+    {%if es%}
+    <h6 style="color: brown;">STARTING BID: $ {{bid.sbid}}</h6>
+    <h6 style="color: brown;">CURRENT BID: $ {{bid.cbid}}</h6>
+       CURRENT highest bidder : {{bid.bidder}}
+       <form method="POST" action="{% url 'bidclose' bid.id %}">
+        {% csrf_token %}
+        <input class="btn btn-primary" type="submit" value="close bid">
+    </form>
+    {% elif fs %}
+    YOU WON THE BID
+    <h6 style="color: brown;">BIDDED AMOUNT: $ {{bid.cbid}}</h6>
+    {%else%}
+    <br>
+    <form method="POST" action="{% url 'watch' bid.id %}">
+        {% csrf_token %}
+        <input class="btn btn-primary" type="submit" value="watchlist">
+    </form>
+    <h6 style="color: brown;">STARTING BID: $ {{bid.sbid}}</h6>
+    <h6 style="color: brown;">CURRENT BID: $ {{bid.cbid}}</h6>
+        <form method="POST" action="{% url 'bidding' bid.id %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <input class="form-control" type="text" name="bid" placeholder="BID" style="width: 200px;">
+            </div>
+            <input class="btn btn-primary" type="submit" value="bid">
+        </form>
+        
+        <b style="color:red">{{message}}</b>
+        
+        
+    {% endif %}
+                
+</div>
+<div id="box">
+    {{bid.desc}}
+</div>
+<div>
+    <h3 style="color: rgb(41, 115, 226);">COMMENTS</h3>
+    <form method="POST" action="{% url 'comments' bid.id %}">
+        <div class="form-group">
+            {% csrf_token %}
+            <input class="form-control" type="text" name="comment" placeholder="add comment">
+        </div>
+        <input class="btn btn-primary" type="submit" value="comment">
+    </form>
+    <div>
+        {%for comment in comments%}
+        <div id="box">
+            <i style="font-size: 20px;"><b>{{comment.comment}}</b></i><br>
+            {{comment.commenter}}  <i style="font-size:10px">{{comment.date}}</i>
+        </div>
+        {%endfor%}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2 style="color: beige;">Biddings won</h2>
+    <div>
+        {{message}}
+        {%for bid in bidlist %}
+            <div id="box"">
+                <a href="{{bid.id}}"><div style="text-align: right;display: inline-block;width: 50%;border-radius: 5px;"><h3>{{bid.title}} </h3></a>
+                    <h6 style="color: brown;">PRICE: $ {{bid.cbid}}</h6></div>
+                    <div style="text-align: left;display: inline-block;width: 50%;">
+                    <img src="{{bid.img}}" alt="{{bid.title}}" style="width: 200px;"></div>
+            </div>
+       
+        {%endfor%}
+    </div>
+    
+{% endblock %}
